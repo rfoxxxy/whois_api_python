@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "whois-api"
+version = "1.0.0"
+description = "whois.neonteam.cc wrapper"
+authors = ["rf0x3d <yarekfrolov@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/rfoxxxy/whois_api_python"
+repository = "https://github.com/rfoxxxy/whois_api_python"
+keywords = ["ip-api", "whois", "ip-check"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 1 - Planning",
+    "Environment :: Console",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+include = ["LICENSE"]
+packages = [{ include = "whois_api" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+httpx = "^0.23.3"
+Brotli = "^1.0.9"
+pydantic = "^1.10.7"
+orjson = "^3.8.9"
+
+[tool.poetry.group.dev.dependencies]
+yapf = "^0.32.0"
+pycodestyle = "^2.10.0"
+isort = "^5.12.0"
+pytest = "^7.2.2"
+pylint = "^2.17.2"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+addopts = "-rsxX -l --tb=short"
+xfail_strict = true
+asyncio_mode = "auto"
