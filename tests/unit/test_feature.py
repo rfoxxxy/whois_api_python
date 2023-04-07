@@ -8,6 +8,14 @@ LOGGER = logging.getLogger(__name__)
 
 
 class TestFeature:
+    async def test_info_exists_ppl(self, api: "WhoIS"):
+        request = await api.feature.info_exists("PPL")
+        assert request is True
+
+    async def test_info_exists_false(self, api: "WhoIS"):
+        request = await api.feature.info_exists("SMTH")
+        assert request is False
+
     async def test_info_ppl(self, api: "WhoIS"):
         request = await api.feature.info("PPL")
         assert request.fclass == "P"

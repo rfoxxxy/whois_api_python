@@ -12,4 +12,4 @@ sys.path.append('./')
 
 @pytest.fixture(scope="session")
 def api(request):
-    return WhoIS("https://whois.neonteam.cc", 10)
+    return WhoIS()

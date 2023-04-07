@@ -16,6 +16,18 @@ class MethodBase:
         return f"{self.category_name}.{method_name}"
 
     async def api_request(self, method_name: str, params: dict | None) -> APIResponse:
+        """Make raw API request
+
+        Args:
+            method_name (str): API method name according to https://whois.neonteam.cc/docs
+            params (dict, optional): Request params
+
+        Raises:
+            APIException: API error message
+
+        Returns:
+            APIResponse: API response object
+        """
         response = await self.__api._make_request(self.make_method_name(method_name), params)  # pylint: disable=protected-access
         if not response.success:
             raise APIException(response.output[0].message)

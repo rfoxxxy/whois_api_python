@@ -19,3 +19,12 @@ class TestIP:
         # LOGGER.info(request)
         assert request.location[0].get_name_by_lang("rus").name == "Европа"  # type: ignore
         assert request.location[1].get_name_by_lang("rus").name == "Россия"  # type: ignore
+
+    async def test_fmt_location_moscow(self, api: "WhoIS"):
+        request = await api.ip.info("95.220.18.20")
+        assert request.fmt_location("rus") == "Россия, Москва"
+
+    async def test_fmt_location_undefined(self, api: "WhoIS"):
+        request = await api.ip.info("aaa")
+        print(request.location)
+        assert request.fmt_location("rus") == ""

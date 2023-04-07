@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "whois-api"
-version = "1.0.0"
-description = "whois.neonteam.cc wrapper"
+version = "1.1.0"
+description = "whois.neonteam.cc api wrapper"
 authors = ["rf0x3d <yarekfrolov@gmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -10,7 +10,7 @@ repository = "https://github.com/rfoxxxy/whois_api_python"
 keywords = ["ip-api", "whois", "ip-check"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
-    "Development Status :: 1 - Planning",
+    "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
@@ -23,6 +23,7 @@ httpx = "^0.23.3"
 Brotli = "^1.0.9"
 pydantic = "^1.10.7"
 orjson = "^3.8.9"
+httpx-cache = "^0.8.0"
 
 [tool.poetry.group.dev.dependencies]
 yapf = "^0.32.0"
