@@ -3,7 +3,7 @@ import typing
 
 import pytest
 
-from whois_api.types.exceptions import APIException
+from whois_api.types.exceptions import OptionalParameterError
 
 if typing.TYPE_CHECKING:
     from whois_api import WhoIS  # pragma: no cover
@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 
 class TestCountry:
     async def test_info_exists_exception(self, api: "WhoIS"):
-        with pytest.raises(APIException) as exc_info:
+        with pytest.raises(OptionalParameterError) as exc_info:
             await api.country.info_exists()
         assert str(exc_info.value) == 'one of optional parameters must be used'
 
@@ -34,7 +34,7 @@ class TestCountry:
         assert request_location_id is True
 
     async def test_info_exception(self, api: "WhoIS"):
-        with pytest.raises(APIException) as exc_info:
+        with pytest.raises(OptionalParameterError) as exc_info:
             await api.country.info()
         assert str(exc_info.value) == 'one of optional parameters must be used'
 
@@ -57,12 +57,12 @@ class TestCountry:
         assert request_alpha == request_fips == request_location_id
 
     async def test_is_neighbour_1_exception(self, api: "WhoIS"):
-        with pytest.raises(APIException) as exc_info:
+        with pytest.raises(OptionalParameterError) as exc_info:
             await api.country.is_neighbour(neighbour_2_country_alpha="US")
         assert str(exc_info.value) == 'one of optional parameters must be used for neighbour_1'
 
     async def test_is_neighbour_2_exception(self, api: "WhoIS"):
-        with pytest.raises(APIException) as exc_info:
+        with pytest.raises(OptionalParameterError) as exc_info:
             await api.country.is_neighbour(neighbour_1_country_alpha="US")
         assert str(exc_info.value) == 'one of optional parameters must be used for neighbour_2'
 

@@ -1,7 +1,7 @@
 import typing
 
 from whois_api.types import APIResponse
-from whois_api.types.exceptions import APIException
+from whois_api.types.exceptions import APIException, NotFoundError
 
 if typing.TYPE_CHECKING:
     from whois_api import WhoIS  # pragma: no cover
@@ -31,4 +31,7 @@ class MethodBase:
         response = await self.__api._make_request(self.make_method_name(method_name), params)  # pylint: disable=protected-access
         if not response.success:
             raise APIException(response.output[0].message)
+        if not response.output:
+            raise NotFoundError("Data not found for request {}{}".format(  # pylint: disable=consider-using-f-string
+                self.make_method_name(method_name), f'?{"&".join([f"{x}={y}" for x, y in params.items()])}' if params else ""))
         return response

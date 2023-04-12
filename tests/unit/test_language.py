@@ -3,7 +3,7 @@ import typing
 
 import pytest
 
-from whois_api.types.exceptions import APIException
+from whois_api.types.exceptions import OptionalParameterError
 
 if typing.TYPE_CHECKING:
     from whois_api import WhoIS  # pragma: no cover
@@ -32,7 +32,7 @@ class TestLanguage:
         assert request.language_alpha_3 == "eng"
 
     async def test_list_by_country_exception(self, api: "WhoIS"):
-        with pytest.raises(APIException) as exc_info:
+        with pytest.raises(OptionalParameterError) as exc_info:
             await api.language.list_by_country()
         assert str(exc_info.value) == 'one of optional parameters must be used'
 
@@ -50,7 +50,7 @@ class TestLanguage:
         assert request[0].language_alpha_3 == "eng"
 
     async def test_exists_by_country_exception(self, api: "WhoIS"):
-        with pytest.raises(APIException) as exc_info:
+        with pytest.raises(OptionalParameterError) as exc_info:
             await api.language.exists_by_country("ru")
         assert str(exc_info.value) == 'one of optional parameters must be used'
 

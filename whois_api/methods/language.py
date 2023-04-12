@@ -2,7 +2,7 @@ from typing import List
 
 from whois_api.methods.base import MethodBase
 from whois_api.types import Language
-from whois_api.types.exceptions import APIException
+from whois_api.types.exceptions import OptionalParameterError
 
 
 class LanguageMethod(MethodBase):
@@ -52,13 +52,13 @@ class LanguageMethod(MethodBase):
                 then this parameter is used to determine the country. Defaults to None.
 
         Raises:
-            APIException: None of optional parameters are used
+            OptionalParameterError: None of optional parameters are used
 
         Returns:
             List[Language]: List of Language objects
         """
         if not country_alpha and not country_fips and not country_location_id:
-            raise APIException("one of optional parameters must be used")
+            raise OptionalParameterError("one of optional parameters must be used")
         return (await self.api_request("list_by_country", {"country_alpha": country_alpha,
                                                            "country_fips": country_fips,
                                                            "country_location_id": country_location_id})).output
@@ -87,13 +87,13 @@ class LanguageMethod(MethodBase):
                 then this parameter is used to determine the country. Defaults to None.
 
         Raises:
-            APIException: None of optional parameters are used
+            OptionalParameterError: None of optional parameters are used
 
         Returns:
             bool
         """
         if not country_alpha and not country_fips and not country_location_id:
-            raise APIException("one of optional parameters must be used")
+            raise OptionalParameterError("one of optional parameters must be used")
         return (await self.api_request("exists_by_country", {"language_alpha": language_alpha,
                                                              "country_alpha": country_alpha,
                                                              "country_fips": country_fips,
