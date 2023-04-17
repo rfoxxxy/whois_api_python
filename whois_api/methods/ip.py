@@ -1,4 +1,4 @@
-from whois_api.methods import MethodBase
+from whois_api.methods.base import MethodBase
 from whois_api.types import IP
 
 
