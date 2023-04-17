@@ -1,5 +1,4 @@
-import typing
-
+from .base import MethodBase
 from .country import CountryMethod
 from .currency import CurrencyMethod
 from .feature import FeatureMethod
@@ -11,4 +10,4 @@ from .useragent import UserAgentMethod
 __all__ = ("CountryMethod", "CurrencyMethod",
            "FeatureMethod", "IPMethod",
            "LanguageMethod", "LocationMethod",
-           "UserAgentMethod")
+           "UserAgentMethod", "MethodBase")

@@ -2,13 +2,9 @@ import httpx_cache
 import orjson
 import pkg_resources
 
-from whois_api.methods.country import CountryMethod
-from whois_api.methods.currency import CurrencyMethod
-from whois_api.methods.feature import FeatureMethod
-from whois_api.methods.ip import IPMethod
-from whois_api.methods.language import LanguageMethod
-from whois_api.methods.location import LocationMethod
-from whois_api.methods.useragent import UserAgentMethod
+from whois_api.methods import (CountryMethod, CurrencyMethod, FeatureMethod,
+                               IPMethod, LanguageMethod, LocationMethod,
+                               UserAgentMethod)
 from whois_api.types import APIResponse
 
 __version__ = pkg_resources.get_distribution('whois_api').version
