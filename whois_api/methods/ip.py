@@ -5,10 +5,10 @@ from whois_api.types import IP
 class IPMethod(MethodBase):
     async def info(
         self,
-        ip: str | None = None,
+        ip: str | None = None,  # pylint: disable=invalid-name
         include_country: bool = True,
         include_continent: bool = False,
-    ) -> IP:  # pylint: disable=invalid-name
+    ) -> IP:
         """The method allows you to get information about the IP by the ip parameter.
 
         Args:

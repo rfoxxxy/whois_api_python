@@ -67,5 +67,5 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
             )
             response = await client.send(request)
             return APIResponse(
-                **orjson.loads(response.content)
-            )  # pylint: disable=no-member
+                **orjson.loads(response.content)  # pylint: disable=no-member
+            )

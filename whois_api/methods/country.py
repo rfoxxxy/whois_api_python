@@ -88,11 +88,9 @@ class CountryMethod(MethodBase):
             )
         ).output[0]
 
-    async def is_neighbour(
+    async def is_neighbour(  # pylint: disable=too-many-arguments
         self,
-        neighbour_1_country_alpha: str
-        | int
-        | None = None,  # pylint: disable=too-many-arguments
+        neighbour_1_country_alpha: str | int | None = None,
         neighbour_1_country_fips: str | None = None,
         neighbour_1_country_location_id: int | None = None,
         neighbour_2_country_alpha: str | int | None = None,
