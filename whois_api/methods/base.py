@@ -38,7 +38,7 @@ class MethodBase:
         if not response.success:
             raise APIException(response.output[0].message)
         if not response.output:
-            raise NotFoundError(
+            raise NotFoundError(  # pragma: no cover
                 "Data not found for request {}{}".format(  # pylint: disable=consider-using-f-string
                     self.make_method_name(method_name),
                     f'?{"&".join([f"{x}={y}" for x, y in params.items()])}'
