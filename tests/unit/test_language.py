@@ -3,7 +3,7 @@ import typing
 
 import pytest
 
-from whois_api.types.exceptions import OptionalParameterError
+from whois_api.types.exceptions import APIException, OptionalParameterError
 
 if typing.TYPE_CHECKING:
     from whois_api import WhoIS  # pragma: no cover
@@ -17,8 +17,11 @@ class TestLanguage:
         assert request is True
 
     async def test_info_exists_false(self, api: "WhoIS"):
-        request = await api.language.info_exists("smth")
-        assert request is False
+        with pytest.raises(APIException) as exc_info:
+            await api.language.info_exists("smth")
+        assert (
+            str(exc_info.value) == 'Parameter(s) "language_alpha" are invalid.'
+        )
 
     async def test_info_ru(self, api: "WhoIS"):
         request = await api.language.info("ru")
@@ -34,7 +37,7 @@ class TestLanguage:
     async def test_list_by_country_exception(self, api: "WhoIS"):
         with pytest.raises(OptionalParameterError) as exc_info:
             await api.language.list_by_country()
-        assert str(exc_info.value) == 'one of optional parameters must be used'
+        assert str(exc_info.value) == "one of optional parameters must be used"
 
     async def test_list_by_country_ru(self, api: "WhoIS"):
         request = await api.language.list_by_country("ru")
@@ -52,7 +55,7 @@ class TestLanguage:
     async def test_exists_by_country_exception(self, api: "WhoIS"):
         with pytest.raises(OptionalParameterError) as exc_info:
             await api.language.exists_by_country("ru")
-        assert str(exc_info.value) == 'one of optional parameters must be used'
+        assert str(exc_info.value) == "one of optional parameters must be used"
 
     async def test_exists_by_country_ru_ru(self, api: "WhoIS"):
         request = await api.language.exists_by_country("ru", "ru")

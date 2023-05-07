@@ -3,7 +3,12 @@ from whois_api.types import IP
 
 
 class IPMethod(MethodBase):
-    async def info(self, ip: str | None = None, include_country: bool = True, include_continent: bool = False) -> IP:  # pylint: disable=invalid-name
+    async def info(
+        self,
+        ip: str | None = None,
+        include_country: bool = True,
+        include_continent: bool = False,
+    ) -> IP:  # pylint: disable=invalid-name
         """The method allows you to get information about the IP by the ip parameter.
 
         Args:
@@ -18,6 +23,13 @@ class IPMethod(MethodBase):
         Returns:
             IP: IP Information object
         """
-        return (await self.api_request("info", {"ip": ip,
-                                                "include_country": include_country,
-                                                "include_continent": include_continent})).output[0]
+        return (
+            await self.api_request(
+                "info",
+                {
+                    "ip": ip,
+                    "include_country": include_country,
+                    "include_continent": include_continent,
+                },
+            )
+        ).output[0]

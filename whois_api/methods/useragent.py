@@ -1,4 +1,3 @@
-
 from whois_api.methods.base import MethodBase
 from whois_api.types import UserAgent
 
@@ -15,4 +14,6 @@ class UserAgentMethod(MethodBase):
         Returns:
             UserAgent: UserAgent Information object
         """
-        return (await self.api_request("info", {"useragent": useragent})).output[0]
+        return (
+            await self.api_request("info", {"useragent": useragent})
+        ).output[0]

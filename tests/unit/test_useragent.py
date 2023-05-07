@@ -14,7 +14,9 @@ class TestUserAgent:
         assert request.browser.family == "Other"
 
     async def test_info_mac_safari(self, api: "WhoIS"):
-        request = await api.useragent.info("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Safari/605.1.15")
+        request = await api.useragent.info(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Safari/605.1.15"
+        )
         assert request.os.family == "Mac OS X"
         assert request.os.version == "10.15.7"
         assert request.browser.family == "Safari"

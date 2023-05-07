@@ -26,9 +26,10 @@ orjson = "^3.8.9"
 httpx-cache = "^0.8.0"
 
 [tool.poetry.group.dev.dependencies]
-yapf = "^0.32.0"
 pycodestyle = "^2.10.0"
 isort = "^5.12.0"
+black = "^23.3.0"
+pre-commit = "^3.3.1"
 pytest = "^7.2.2"
 pylint = "^2.17.2"
 pytest-asyncio = "^0.21.0"
@@ -46,3 +47,7 @@ log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 addopts = "-rsxX -l --tb=short"
 xfail_strict = true
 asyncio_mode = "auto"
+
+[tool.isort]
+profile = "black"
+known_first_party = "poetry"

@@ -1,4 +1,3 @@
-
 from typing import List
 
 from whois_api.methods.base import MethodBase
@@ -16,7 +15,9 @@ class LocationMethod(MethodBase):
         Returns:
             bool: Information existence
         """
-        return (await self.api_request("info_exists", {"location_id": location_id})).output[0]
+        return (
+            await self.api_request("info_exists", {"location_id": location_id})
+        ).output[0]
 
     async def info(self, location_id: int) -> Location:
         """The method allows you to get information about a geographical object by the location_id parameter.
@@ -28,9 +29,16 @@ class LocationMethod(MethodBase):
         Returns:
             Location: Location Information object
         """
-        return (await self.api_request("info", {"location_id": location_id})).output[0]
+        return (
+            await self.api_request("info", {"location_id": location_id})
+        ).output[0]
 
-    async def hierarchy(self, location_id: int, include_country: bool = True, include_continent: bool = False) -> List[Location]:
+    async def hierarchy(
+        self,
+        location_id: int,
+        include_country: bool = True,
+        include_continent: bool = False,
+    ) -> List[Location]:
         """The method allows you to get a hierarchy of geographical objects by the location_id parameter.
 
         Args:
@@ -44,6 +52,13 @@ class LocationMethod(MethodBase):
         Returns:
             List[Location]: List of Location objects
         """
-        return (await self.api_request("hierarchy", {"location_id": location_id,
-                                                     "include_country": include_country,
-                                                     "include_continent": include_continent})).output
+        return (
+            await self.api_request(
+                "hierarchy",
+                {
+                    "location_id": location_id,
+                    "include_country": include_country,
+                    "include_continent": include_continent,
+                },
+            )
+        ).output

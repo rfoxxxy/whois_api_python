@@ -13,7 +13,11 @@ class CurrencyMethod(MethodBase):
         Returns:
             bool: Currency existence
         """
-        return (await self.api_request("info_exists", {"currency_alpha": currency_alpha})).output[0]
+        return (
+            await self.api_request(
+                "info_exists", {"currency_alpha": currency_alpha}
+            )
+        ).output[0]
 
     async def info(self, currency_alpha: str | int) -> Currency:
         """The method allows you to get information about the currency by the currency_alpha parameter.
@@ -25,4 +29,6 @@ class CurrencyMethod(MethodBase):
         Returns:
             Currency: Currency Information object
         """
-        return (await self.api_request("info", {"currency_alpha": currency_alpha})).output[0]
+        return (
+            await self.api_request("info", {"currency_alpha": currency_alpha})
+        ).output[0]

@@ -15,7 +15,9 @@ class FeatureMethod(MethodBase):
         Returns:
             bool: Feature existence
         """
-        return (await self.api_request("info_exists", {"fcode": fcode})).output[0]
+        return (
+            await self.api_request("info_exists", {"fcode": fcode})
+        ).output[0]
 
     async def info(self, fcode: str) -> Feature:
         """The method allows you to get information about the classification of geographical objects by the fcode parameter.

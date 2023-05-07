@@ -4,9 +4,12 @@ from whois_api.types.exceptions import OptionalParameterError
 
 
 class CountryMethod(MethodBase):
-    async def info_exists(self, country_alpha: str | int | None = None,
-                          country_fips: str | None = None,
-                          country_location_id: int | None = None) -> bool:
+    async def info_exists(
+        self,
+        country_alpha: str | int | None = None,
+        country_fips: str | None = None,
+        country_location_id: int | None = None,
+    ) -> bool:
         """The method allows you to check the existence of information about a country by one of three parameters: country_alpha, country_fips or country_location_id.
 
         Args:
@@ -29,14 +32,26 @@ class CountryMethod(MethodBase):
             bool: Country existence
         """
         if not country_alpha and not country_fips and not country_location_id:
-            raise OptionalParameterError("one of optional parameters must be used")
-        return (await self.api_request("info_exists", {"country_alpha": country_alpha,
-                                                       "country_fips": country_fips,
-                                                       "country_location_id": country_location_id})).output[0]
+            raise OptionalParameterError(
+                "one of optional parameters must be used"
+            )
+        return (
+            await self.api_request(
+                "info_exists",
+                {
+                    "country_alpha": country_alpha,
+                    "country_fips": country_fips,
+                    "country_location_id": country_location_id,
+                },
+            )
+        ).output[0]
 
-    async def info(self, country_alpha: str | int | None = None,
-                   country_fips: str | None = None,
-                   country_location_id: int | None = None) -> Country:
+    async def info(
+        self,
+        country_alpha: str | int | None = None,
+        country_fips: str | None = None,
+        country_location_id: int | None = None,
+    ) -> Country:
         """The method allows you to get information about a country by one of three parameters: country_alpha, country_fips or country_location_id.
 
         Args:
@@ -59,17 +74,31 @@ class CountryMethod(MethodBase):
             Country: Country Information object
         """
         if not country_alpha and not country_fips and not country_location_id:
-            raise OptionalParameterError("one of optional parameters must be used")
-        return (await self.api_request("info", {"country_alpha": country_alpha,
-                                                "country_fips": country_fips,
-                                                "country_location_id": country_location_id})).output[0]
+            raise OptionalParameterError(
+                "one of optional parameters must be used"
+            )
+        return (
+            await self.api_request(
+                "info",
+                {
+                    "country_alpha": country_alpha,
+                    "country_fips": country_fips,
+                    "country_location_id": country_location_id,
+                },
+            )
+        ).output[0]
 
-    async def is_neighbour(self, neighbour_1_country_alpha: str | int | None = None,  # pylint: disable=too-many-arguments
-                           neighbour_1_country_fips: str | None = None,
-                           neighbour_1_country_location_id: int | None = None,
-                           neighbour_2_country_alpha: str | int | None = None,
-                           neighbour_2_country_fips: str | None = None,
-                           neighbour_2_country_location_id: int | None = None) -> bool:
+    async def is_neighbour(
+        self,
+        neighbour_1_country_alpha: str
+        | int
+        | None = None,  # pylint: disable=too-many-arguments
+        neighbour_1_country_fips: str | None = None,
+        neighbour_1_country_location_id: int | None = None,
+        neighbour_2_country_alpha: str | int | None = None,
+        neighbour_2_country_fips: str | None = None,
+        neighbour_2_country_location_id: int | None = None,
+    ) -> bool:
         """The method allows you to check whether two countries are neighbors by one of three parameters: neighbor_(n)_country_alpha, neighbor_(n)_country_fips or neighbor_(n)_country_location_id.
 
         Args:
@@ -103,13 +132,32 @@ class CountryMethod(MethodBase):
         Returns:
             bool
         """
-        if not neighbour_1_country_alpha and not neighbour_1_country_fips and not neighbour_1_country_location_id:
-            raise OptionalParameterError("one of optional parameters must be used for neighbour_1")
-        if not neighbour_2_country_alpha and not neighbour_2_country_fips and not neighbour_2_country_location_id:
-            raise OptionalParameterError("one of optional parameters must be used for neighbour_2")
-        return (await self.api_request("is_neighbour", {"neighbour_1_country_alpha": neighbour_1_country_alpha,
-                                                        "neighbour_1_country_fips": neighbour_1_country_fips,
-                                                        "neighbour_1_country_location_id": neighbour_1_country_location_id,
-                                                        "neighbour_2_country_alpha": neighbour_2_country_alpha,
-                                                        "neighbour_2_country_fips": neighbour_2_country_fips,
-                                                        "neighbour_2_country_location_id": neighbour_2_country_location_id})).output[0]
+        if (
+            not neighbour_1_country_alpha
+            and not neighbour_1_country_fips
+            and not neighbour_1_country_location_id
+        ):
+            raise OptionalParameterError(
+                "one of optional parameters must be used for neighbour_1"
+            )
+        if (
+            not neighbour_2_country_alpha
+            and not neighbour_2_country_fips
+            and not neighbour_2_country_location_id
+        ):
+            raise OptionalParameterError(
+                "one of optional parameters must be used for neighbour_2"
+            )
+        return (
+            await self.api_request(
+                "is_neighbour",
+                {
+                    "neighbour_1_country_alpha": neighbour_1_country_alpha,
+                    "neighbour_1_country_fips": neighbour_1_country_fips,
+                    "neighbour_1_country_location_id": neighbour_1_country_location_id,
+                    "neighbour_2_country_alpha": neighbour_2_country_alpha,
+                    "neighbour_2_country_fips": neighbour_2_country_fips,
+                    "neighbour_2_country_location_id": neighbour_2_country_location_id,
+                },
+            )
+        ).output[0]

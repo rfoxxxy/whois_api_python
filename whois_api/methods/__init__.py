@@ -6,7 +6,12 @@ from .language import LanguageMethod
 from .location import LocationMethod
 from .useragent import UserAgentMethod
 
-__all__ = ("CountryMethod", "CurrencyMethod",
-           "FeatureMethod", "IPMethod",
-           "LanguageMethod", "LocationMethod",
-           "UserAgentMethod")
+__all__ = (
+    "CountryMethod",
+    "CurrencyMethod",
+    "FeatureMethod",
+    "IPMethod",
+    "LanguageMethod",
+    "LocationMethod",
+    "UserAgentMethod",
+)

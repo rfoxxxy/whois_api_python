@@ -7,7 +7,7 @@ from whois_api import WhoIS
 
 os.environ["DISABLE_UVLOOP"] = "True"
 
-sys.path.append('./')
+sys.path.append("./")
 
 
 @pytest.fixture(scope="session")
