@@ -3,7 +3,6 @@ from typing import List
 
 from whois_api.methods.base import MethodBase
 from whois_api.types import Language
-from whois_api.types.exceptions import OptionalParameterError
 
 
 class LanguageMethod(MethodBase):
@@ -19,9 +18,7 @@ class LanguageMethod(MethodBase):
             bool: Information existence
         """
         return (
-            await self.api_request(
-                "info_exists", {"language_alpha": language_alpha}
-            )
+            await self.api_request("info_exists", {"language_alpha": language_alpha})
         ).output[0]
 
     async def info(self, language_alpha: str) -> Language:
@@ -61,16 +58,9 @@ class LanguageMethod(MethodBase):
                 If this parameter is specified and country_alpha and country_fips are not specified,
                 then this parameter is used to determine the country. Defaults to None.
 
-        Raises:
-            OptionalParameterError: None of optional parameters are used
-
         Returns:
             List[Language]: List of Language objects
         """
-        if not country_alpha and not country_fips and not country_location_id:
-            raise OptionalParameterError(
-                "one of optional parameters must be used"
-            )
         return (
             await self.api_request(
                 "list_by_country",
@@ -108,16 +98,9 @@ class LanguageMethod(MethodBase):
                 If this parameter is specified and country_alpha and country_fips are not specified,
                 then this parameter is used to determine the country. Defaults to None.
 
-        Raises:
-            OptionalParameterError: None of optional parameters are used
-
         Returns:
             bool
         """
-        if not country_alpha and not country_fips and not country_location_id:
-            raise OptionalParameterError(
-                "one of optional parameters must be used"
-            )
         return (
             await self.api_request(
                 "exists_by_country",

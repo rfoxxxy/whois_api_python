@@ -12,6 +12,18 @@ from whois_api.methods import (
     UserAgentMethod,
 )
 from whois_api.types import APIResponse
+from whois_api.types.exceptions import (
+    CountryNotFoundError,
+    CurrencyNotFoundError,
+    FeatureNotFoundError,
+    InvalidValueError,
+    LanguageNotFoundError,
+    LocationNotFoundError,
+    MissingValueError,
+    TooManyParametersError,
+    TooManyRequestsError,
+    UnexpectedError,
+)
 
 __version__ = pkg_resources.get_distribution("whois_api").version
 
@@ -45,7 +57,7 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
         self.useragent = UserAgentMethod("useragent", self)
 
     def __repr__(self) -> str:  # pragma: no cover
-        return f"<WhoIS at {hex(id(self))}>"  # yapf: disable
+        return f"<{self.__class__.__name__} at {hex(id(self))}>"  # yapf: disable
 
     async def _make_request(self, method: str, params: dict | None):
         async with httpx_cache.AsyncClient(
@@ -66,6 +78,33 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
                 timeout=self.api_timeout,
             )
             response = await client.send(request)
-            return APIResponse(
-                **orjson.loads(response.content)  # pylint: disable=no-member
-            )
+            data = orjson.loads(response.content)  # pylint: disable=no-member
+            if not data["success"] and len(data["output"]) == 1:
+                data_dicted = dict(
+                    filter(lambda e: e[0] != "class_name", data["output"][0].items())
+                )
+                match data["output"][0]["class_name"]:
+                    case "TooManyRequestsError":
+                        raise TooManyRequestsError(**dict(data_dicted))
+                    case "MissingValueError":
+                        raise MissingValueError(**dict(data_dicted))
+                    case "InvalidValueError":
+                        raise InvalidValueError(**dict(data_dicted))
+                    case "TooManyParametersError":
+                        raise TooManyParametersError(**dict(data_dicted))
+                    case "CountryNotFoundError":
+                        raise CountryNotFoundError(**dict(data_dicted))
+                    case "CurrencyNotFoundError":
+                        raise CurrencyNotFoundError(**dict(data_dicted))
+                    case "FeatureNotFoundError":
+                        raise FeatureNotFoundError(**dict(data_dicted))
+                    case "LanguageNotFoundError":
+                        raise LanguageNotFoundError(**dict(data_dicted))
+                    case "LocationNotFoundError":
+                        raise LocationNotFoundError(**dict(data_dicted))
+                    case _:
+                        raise UnexpectedError(
+                            status_code=data["output"][0].get("status_code", 503),
+                            message=data["output"][0].get("message", ""),
+                        )
+            return APIResponse(**data)

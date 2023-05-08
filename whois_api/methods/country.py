@@ -1,6 +1,5 @@
 from whois_api.methods.base import MethodBase
 from whois_api.types import Country
-from whois_api.types.exceptions import OptionalParameterError
 
 
 class CountryMethod(MethodBase):
@@ -25,16 +24,9 @@ class CountryMethod(MethodBase):
                 If this parameter is specified and country_alpha and country_fips are not specified,
                 then this parameter is used to determine the country. Defaults to None.
 
-        Raises:
-            OptionalParameterError: None of optional parameters are used
-
         Returns:
             bool: Country existence
         """
-        if not country_alpha and not country_fips and not country_location_id:
-            raise OptionalParameterError(
-                "one of optional parameters must be used"
-            )
         return (
             await self.api_request(
                 "info_exists",
@@ -67,16 +59,9 @@ class CountryMethod(MethodBase):
                 If this parameter is specified and country_alpha and country_fips are not specified,
                 then this parameter is used to determine the country. Defaults to None.
 
-        Raises:
-            OptionalParameterError: None of optional parameters are used
-
         Returns:
             Country: Country Information object
         """
-        if not country_alpha and not country_fips and not country_location_id:
-            raise OptionalParameterError(
-                "one of optional parameters must be used"
-            )
         return (
             await self.api_request(
                 "info",
@@ -123,29 +108,9 @@ class CountryMethod(MethodBase):
                 If this parameter is specified and country_alpha and country_fips are not specified,
                 then this parameter is used to determine the country. Defaults to None.
 
-        Raises:
-            OptionalParameterError: None of optional parameters for 1st country are used
-            OptionalParameterError: None of optional parameters for 2nd country are used
-
         Returns:
             bool
         """
-        if (
-            not neighbour_1_country_alpha
-            and not neighbour_1_country_fips
-            and not neighbour_1_country_location_id
-        ):
-            raise OptionalParameterError(
-                "one of optional parameters must be used for neighbour_1"
-            )
-        if (
-            not neighbour_2_country_alpha
-            and not neighbour_2_country_fips
-            and not neighbour_2_country_location_id
-        ):
-            raise OptionalParameterError(
-                "one of optional parameters must be used for neighbour_2"
-            )
         return (
             await self.api_request(
                 "is_neighbour",
