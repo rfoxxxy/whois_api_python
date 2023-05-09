@@ -3,6 +3,8 @@ from whois_api.types import Feature
 
 
 class FeatureMethod(MethodBase):
+    category_name = "feature"
+
     async def info_exists(self, fcode: str) -> bool:
         """The method allows you to check the existence of information about the classification of geographical objects by the fcode parameter.
 

@@ -6,6 +6,8 @@ from whois_api.types import Language
 
 
 class LanguageMethod(MethodBase):
+    category_name = "language"
+
     async def info_exists(self, language_alpha: str) -> bool:
         """The method allows you to check the existence of information about the language by the language_alpha parameter.
 
@@ -18,7 +20,9 @@ class LanguageMethod(MethodBase):
             bool: Information existence
         """
         return (
-            await self.api_request("info_exists", {"language_alpha": language_alpha})
+            await self.api_request(
+                "info_exists", {"language_alpha": language_alpha}
+            )
         ).output[0]
 
     async def info(self, language_alpha: str) -> Language:

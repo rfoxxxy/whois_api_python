@@ -19,7 +19,10 @@ class TestLanguage:
     async def test_info_exists_false(self, api: "WhoIS"):
         with pytest.raises(InvalidValueError) as exc_info:
             await api.language.info_exists("smth")
-        assert exc_info.value.message == 'Parameter(s) "language_alpha" are invalid.'
+        assert (
+            exc_info.value.message
+            == 'Parameter(s) "language_alpha" are invalid.'
+        )
 
     async def test_info_ru(self, api: "WhoIS"):
         request = await api.language.info("ru")

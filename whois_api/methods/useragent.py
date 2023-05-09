@@ -3,6 +3,8 @@ from whois_api.types import UserAgent
 
 
 class UserAgentMethod(MethodBase):
+    category_name = "useragent"
+
     async def info(self, useragent: str | None = None) -> UserAgent:
         """The method allows you to get information about the user's browser and operating system by the useragent parameter.
 

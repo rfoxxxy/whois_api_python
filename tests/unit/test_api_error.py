@@ -14,7 +14,10 @@ LOGGER = logging.getLogger(__name__)
 async def test_api_error(api: "WhoIS"):
     with pytest.raises(MissingValueError) as exc_info:
         await api.location.api_request("info", {})
-    assert exc_info.value.message == 'Parameter(s) "location_id" must contain value(s).'
+    assert (
+        exc_info.value.message
+        == 'Parameter(s) "location_id" must contain value(s).'
+    )
 
 
 async def test_api_not_found_error(api: "WhoIS"):

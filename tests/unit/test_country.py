@@ -23,7 +23,9 @@ class TestCountry:
     async def test_info_exists_ru(self, api: "WhoIS"):
         request_alpha = await api.country.info_exists(country_alpha="RU")
         request_fips = await api.country.info_exists(country_fips="RS")
-        request_location_id = await api.country.info_exists(country_location_id=2017370)
+        request_location_id = await api.country.info_exists(
+            country_location_id=2017370
+        )
         assert request_alpha is True
         assert request_fips is True
         assert request_location_id is True
@@ -31,7 +33,9 @@ class TestCountry:
     async def test_info_exists_us(self, api: "WhoIS"):
         request_alpha = await api.country.info_exists(country_alpha="US")
         request_fips = await api.country.info_exists(country_fips="US")
-        request_location_id = await api.country.info_exists(country_location_id=6252001)
+        request_location_id = await api.country.info_exists(
+            country_location_id=6252001
+        )
         assert request_alpha is True
         assert request_fips is True
         assert request_location_id is True
@@ -47,7 +51,9 @@ class TestCountry:
     async def test_info_ru(self, api: "WhoIS"):
         request_alpha = await api.country.info(country_alpha="RU")
         request_fips = await api.country.info(country_fips="RS")
-        request_location_id = await api.country.info(country_location_id=2017370)
+        request_location_id = await api.country.info(
+            country_location_id=2017370
+        )
         assert request_alpha.currency_alpha_3 == "RUB"
         assert request_fips.currency_alpha_3 == "RUB"
         assert request_location_id.currency_alpha_3 == "RUB"
@@ -56,7 +62,9 @@ class TestCountry:
     async def test_info_us(self, api: "WhoIS"):
         request_alpha = await api.country.info(country_alpha="US")
         request_fips = await api.country.info(country_fips="US")
-        request_location_id = await api.country.info(country_location_id=6252001)
+        request_location_id = await api.country.info(
+            country_location_id=6252001
+        )
         assert request_alpha.currency_alpha_3 == "USD"
         assert request_fips.currency_alpha_3 == "USD"
         assert request_location_id.currency_alpha_3 == "USD"

@@ -1,3 +1,5 @@
+import inspect
+
 import httpx_cache
 import orjson
 import pkg_resources
@@ -11,19 +13,7 @@ from whois_api.methods import (
     LocationMethod,
     UserAgentMethod,
 )
-from whois_api.types import APIResponse
-from whois_api.types.exceptions import (
-    CountryNotFoundError,
-    CurrencyNotFoundError,
-    FeatureNotFoundError,
-    InvalidValueError,
-    LanguageNotFoundError,
-    LocationNotFoundError,
-    MissingValueError,
-    TooManyParametersError,
-    TooManyRequestsError,
-    UnexpectedError,
-)
+from whois_api.types import APIResponse, exceptions
 
 __version__ = pkg_resources.get_distribution("whois_api").version
 
@@ -48,16 +38,18 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
         self.api_timeout = api_timeout
         self.use_cache = use_cache
         self.cache_time = cache_time
-        self.country = CountryMethod("country", self)
-        self.currency = CurrencyMethod("currency", self)
-        self.feature = FeatureMethod("feature", self)
-        self.ip = IPMethod("ip", self)  # pylint: disable=invalid-name
-        self.language = LanguageMethod("language", self)
-        self.location = LocationMethod("location", self)
-        self.useragent = UserAgentMethod("useragent", self)
+        self.country = CountryMethod(self)
+        self.currency = CurrencyMethod(self)
+        self.feature = FeatureMethod(self)
+        self.ip = IPMethod(self)  # pylint: disable=invalid-name
+        self.language = LanguageMethod(self)
+        self.location = LocationMethod(self)
+        self.useragent = UserAgentMethod(self)
 
     def __repr__(self) -> str:  # pragma: no cover
-        return f"<{self.__class__.__name__} at {hex(id(self))}>"  # yapf: disable
+        return (
+            f"<{self.__class__.__name__} at {hex(id(self))}>"  # yapf: disable
+        )
 
     async def _make_request(self, method: str, params: dict | None):
         async with httpx_cache.AsyncClient(
@@ -80,31 +72,29 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
             response = await client.send(request)
             data = orjson.loads(response.content)  # pylint: disable=no-member
             if not data["success"] and len(data["output"]) == 1:
-                data_dicted = dict(
-                    filter(lambda e: e[0] != "class_name", data["output"][0].items())
+                known_exception = (
+                    any(  # doing magic and probably needs rewrite
+                        (exception_class := obj)
+                        and name == data["output"][0]["class_name"]
+                        for name, obj in [
+                            (name, obj)
+                            for name, obj in inspect.getmembers(
+                                exceptions, inspect.isclass
+                            )
+                            if obj.__module__ == "whois_api.types.exceptions"
+                        ]
+                    )
                 )
-                match data["output"][0]["class_name"]:
-                    case "TooManyRequestsError":
-                        raise TooManyRequestsError(**dict(data_dicted))
-                    case "MissingValueError":
-                        raise MissingValueError(**dict(data_dicted))
-                    case "InvalidValueError":
-                        raise InvalidValueError(**dict(data_dicted))
-                    case "TooManyParametersError":
-                        raise TooManyParametersError(**dict(data_dicted))
-                    case "CountryNotFoundError":
-                        raise CountryNotFoundError(**dict(data_dicted))
-                    case "CurrencyNotFoundError":
-                        raise CurrencyNotFoundError(**dict(data_dicted))
-                    case "FeatureNotFoundError":
-                        raise FeatureNotFoundError(**dict(data_dicted))
-                    case "LanguageNotFoundError":
-                        raise LanguageNotFoundError(**dict(data_dicted))
-                    case "LocationNotFoundError":
-                        raise LocationNotFoundError(**dict(data_dicted))
-                    case _:
-                        raise UnexpectedError(
-                            status_code=data["output"][0].get("status_code", 503),
-                            message=data["output"][0].get("message", ""),
+                if known_exception:
+                    data_dicted = dict(
+                        filter(
+                            lambda e: e[0] != "class_name",
+                            data["output"][0].items(),
                         )
+                    )
+                    raise exception_class(**dict(data_dicted))
+                raise exceptions.UnexpectedError(  # pragma: no cover
+                    status_code=data["output"][0].get("status_code", 503),
+                    message=data["output"][0].get("message", ""),
+                )
             return APIResponse(**data)

@@ -3,6 +3,8 @@ from whois_api.types import Country
 
 
 class CountryMethod(MethodBase):
+    category_name = "country"
+
     async def info_exists(
         self,
         country_alpha: str | int | None = None,

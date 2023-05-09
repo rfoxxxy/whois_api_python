@@ -5,6 +5,8 @@ from whois_api.types import Location
 
 
 class LocationMethod(MethodBase):
+    category_name = "location"
+
     async def info_exists(self, location_id: int) -> bool:
         """The method allows you to check the existence of information about a geographical object by the location_id parameter.
 

@@ -3,6 +3,8 @@ from whois_api.types import Currency
 
 
 class CurrencyMethod(MethodBase):
+    category_name = "currency"
+
     async def info_exists(self, currency_alpha: str | int) -> bool:
         """The method allows you to check the existence of currency information by the currency_alpha parameter.
 

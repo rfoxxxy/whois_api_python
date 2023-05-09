@@ -157,7 +157,9 @@ class IP(BaseModel):
 
     def fmt_location(self, language_alpha_3: str) -> str:
         location_hierarchy = [x.get_name_by_lang(language_alpha_3).name for x in self.location if x is not None]  # type: ignore
-        return ", ".join(sorted(set(location_hierarchy), key=location_hierarchy.index))
+        return ", ".join(
+            sorted(set(location_hierarchy), key=location_hierarchy.index)
+        )
 
 
 class Browser(BaseModel):

@@ -3,6 +3,8 @@ from whois_api.types import IP
 
 
 class IPMethod(MethodBase):
+    category_name = "ip"
+
     async def info(
         self,
         ip: str | None = None,  # pylint: disable=invalid-name
