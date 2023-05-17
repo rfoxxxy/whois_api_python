@@ -61,3 +61,8 @@ class LanguageNotFoundError(APIError):
 @dataclass
 class LocationNotFoundError(APIError):
     pass
+
+
+@dataclass
+class MethodNotFoundError(APIError):
+    pass
