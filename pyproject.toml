@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "whois-api"
-version = "1.2.1"
+version = "1.2.3"
 description = "whois.neonteam.cc api wrapper"
 authors = ["rf0x3d <yarekfrolov@gmail.com>"]
 license = "MIT"

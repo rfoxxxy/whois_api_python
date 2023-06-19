@@ -47,9 +47,7 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
         self.useragent = UserAgentMethod(self)
 
     def __repr__(self) -> str:  # pragma: no cover
-        return (
-            f"<{self.__class__.__name__} at {hex(id(self))}>"  # yapf: disable
-        )
+        return f"<{self.__class__.__name__} at {hex(id(self))}>"  # yapf: disable
 
     async def _make_request(self, method: str, params: dict | None):
         async with httpx_cache.AsyncClient(
@@ -71,30 +69,23 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
             )
             response = await client.send(request)
             data = orjson.loads(response.content)  # pylint: disable=no-member
-            if not data["success"] and len(data["output"]) == 1:
-                known_exception = (
-                    any(  # doing magic and probably needs rewrite
-                        (exception_class := obj)
-                        and name == data["output"][0]["class_name"]
-                        for name, obj in [
-                            (name, obj)
-                            for name, obj in inspect.getmembers(
-                                exceptions, inspect.isclass
-                            )
-                            if obj.__module__ == "whois_api.types.exceptions"
-                        ]
-                    )
+            if response.status_code != 200 and not isinstance(data, list):
+                known_exception = any(  # doing magic and probably needs rewrite
+                    (exception_class := obj) and name == data["class_name"]
+                    for name, obj in [
+                        (name, obj)
+                        for name, obj in inspect.getmembers(exceptions, inspect.isclass)
+                        if obj.__module__ == "whois_api.types.exceptions"
+                    ]
                 )
                 if known_exception:
-                    data_dicted = dict(
-                        filter(
-                            lambda e: e[0] != "class_name",
-                            data["output"][0].items(),
-                        )
-                    )
-                    raise exception_class(**dict(data_dicted))
+                    raise exception_class(**data)
                 raise exceptions.UnexpectedError(  # pragma: no cover
-                    status_code=data["output"][0].get("status_code", 503),
-                    message=data["output"][0].get("message", ""),
+                    status_code=data.get("status_code", 503),
+                    message=data.get("message", ""),
                 )
-            return APIResponse(**data)
+            return APIResponse(
+                success=response.status_code == 200,
+                output=data if isinstance(data, list) else [data],
+                execution_time=response.headers.get("X-Response-Time"),
+            )
