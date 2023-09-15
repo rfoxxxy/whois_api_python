@@ -22,7 +22,7 @@ python = "^3.10"
 httpx = "^0.23.3"
 Brotli = "^1.0.9"
 httpx-cache = "^0.8.0"
-orjson = "3.8.9"
+orjson = "^3.9.7"
 pydantic = "^2.3.0"
 
 [tool.poetry.group.dev.dependencies]
