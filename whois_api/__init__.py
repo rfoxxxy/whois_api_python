@@ -4,6 +4,7 @@ import httpx_cache
 import orjson
 import pkg_resources
 
+from whois_api import types
 from whois_api.methods import (
     CountryMethod,
     CurrencyMethod,
@@ -19,6 +20,7 @@ __version__ = pkg_resources.get_distribution("whois_api").version
 
 
 class WhoIS:  # pylint: disable=too-many-instance-attributes
+
     def __init__(
         self,
         api_url: str = "https://whois.neonteam.cc",
@@ -51,41 +53,40 @@ class WhoIS:  # pylint: disable=too-many-instance-attributes
 
     async def _make_request(self, method: str, params: dict | None):
         async with httpx_cache.AsyncClient(
-            headers={
-                "User-Agent": f"whois_api/v{__version__}",
-                "cache-control": f"max-age={self.cache_time}"
-                if self.use_cache
-                else "no-cache",
-            },
-            cache=httpx_cache.FileCache(),
+                headers={
+                    "User-Agent":
+                    f"whois_api/v{__version__}",
+                    "cache-control":
+                    f"max-age={self.cache_time}"
+                    if self.use_cache else "no-cache",
+                },
+                cache=httpx_cache.FileCache(),
         ) as client:
             request = client.build_request(
                 "GET",
                 f"{self.api_url}/api/{method}",
-                params={k: v for k, v in params.items() if v is not None}
-                if params
-                else None,
+                params={
+                    k: v
+                    for k, v in params.items() if v is not None
+                } if params else None,
                 timeout=self.api_timeout,
             )
             response = await client.send(request)
             data = orjson.loads(response.content)  # pylint: disable=no-member
-            if response.status_code != 200 and not isinstance(data, list):
-                known_exception = any(  # doing magic and probably needs rewrite
-                    (exception_class := obj) and name == data["class_name"]
-                    for name, obj in [
-                        (name, obj)
-                        for name, obj in inspect.getmembers(exceptions, inspect.isclass)
-                        if obj.__module__ == "whois_api.types.exceptions"
-                    ]
-                )
-                if known_exception:
-                    raise exception_class(**data)
-                raise exceptions.UnexpectedError(  # pragma: no cover
-                    status_code=data.get("status_code", 503),
-                    message=data.get("message", ""),
-                )
+            if not isinstance(data, list):
+                data = [data]
+            data = list(map(types.dynamic_formatter, data))
+            if response.status_code != 200:
+                if isinstance(data[0], dict):
+                    raise exceptions.UnexpectedError(  # pragma: no cover
+                        status_code=data.get("status_code", 503),
+                        message=data.get("message", ""),
+                    )
+                else:
+                    raise data[0]
+
             return APIResponse(
                 success=response.status_code == 200,
-                output=data if isinstance(data, list) else [data],
+                output=data,
                 execution_time=response.headers.get("X-Response-Time"),
             )
