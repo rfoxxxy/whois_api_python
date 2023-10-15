@@ -139,3 +139,5 @@ cython_debug/
 
 # macOS shit
 .DS_Store
+
+.idea

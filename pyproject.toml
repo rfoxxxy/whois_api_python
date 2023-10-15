@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "whois-api"
-version = "1.2.4"
+version = "1.2.5"
 description = "whois.neonteam.cc api wrapper"
 authors = ["rf0x3d <yarekfrolov@gmail.com>"]
 license = "MIT"
@@ -19,11 +19,11 @@ packages = [{ include = "whois_api" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-httpx = "^0.23.3"
-Brotli = "^1.0.9"
-httpx-cache = "^0.8.0"
-orjson = "^3.9.7"
-pydantic = "^2.3.0"
+httpx = "^0.25.0"
+Brotli = "^1.1.0"
+httpx-cache = "^0.13.0"
+orjson = "^3.9.9"
+pydantic = "^2.4.2"
 
 [tool.poetry.group.dev.dependencies]
 pycodestyle = "^2.10.0"
@@ -33,7 +33,7 @@ pre-commit = "^3.3.1"
 pylint = "^2.17.2"
 pytest-asyncio = "^0.21.0"
 pytest-cov = "^4.0.0"
-yapf = "^0.33.0"
+yapf = "^0.40.2"
 
 [build-system]
 requires = ["poetry-core"]
